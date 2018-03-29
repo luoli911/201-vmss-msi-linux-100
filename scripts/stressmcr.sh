@@ -1,8 +1,7 @@
 #!/bin/bash
 today=$(date +%Y-%m-%d)
-sudo mkdir ~/logshare
-sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare logshare -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
-sudo mkdir ~/logshare/$today
+#sudo mkdir ~/logshare
+sudo mkdir /mnt/azurefiles/$today
 
 echo "---docker pull dotnet from mcr.microsoft.com---"
 pullbegin=$(date +%s%3N)
@@ -13,4 +12,4 @@ PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
 echo "---nslookup mcr.microsoft.com---"
 nslookup=$(nslookup mcr.microsoft.com)
-echo registry,region,starttime,endtime,pulltime:mcr,eastus,$PullStartTime,$PullEndTime,$pulltime >> ~/logshare/$today/mcr-output.log
+echo registry,region,starttime,endtime,pulltime:mcr,eastus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/mcr-output.log
