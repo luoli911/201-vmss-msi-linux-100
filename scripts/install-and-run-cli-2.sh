@@ -57,14 +57,14 @@ sudo mkdir /mnt/azurefiles
 sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare /mnt/azurefiles -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
 sudo mkdir /mnt/azurefiles/$today
 
-echo "---docker pull dotnet from cus.mcr.microsoft.com---"
+echo "---docker pull dotnet from eus.mcr.microsoft.com---"
 pullbegin=$(date +%s%3N)
 PullStartTime=$(date +%H:%M:%S)
-sudo docker pull cus.mcr.microsoft.com/dotnet
+sudo docker pull eus.mcr.microsoft.com/dotnet
 pullend=$(date +%s%3N)
 PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
-echo "---nslookup cus.mcr.microsoft.com---"
-nslookup=$(nslookup cus.mcr.microsoft.com)
-echo registry,region,starttime,endtime,pulltime:mcr,centraltus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/mcr-output.log
+echo "---nslookup eus.mcr.microsoft.com---"
+nslookup=$(nslookup eus.mcr.microsoft.com)
+echo registry,region,starttime,endtime,pulltime:eus.mcr.microsoft.com,eastus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/mcr-output.log
 echo $nslookup >> /mnt/azurefiles/$today/mcr-output.log
