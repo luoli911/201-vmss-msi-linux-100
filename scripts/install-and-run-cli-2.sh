@@ -1,4 +1,5 @@
 #!/bin/bash
+startuptime1=$(date +%s%3N)
 
 while getopts ":i:a:c:r:" opt; do
   case $opt in
@@ -56,6 +57,10 @@ today=$(date +%Y-%m-%d)
 sudo mkdir /mnt/azurefiles
 sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare /mnt/azurefiles -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
 sudo mkdir /mnt/azurefiles/$today
+
+startuptime2=$(date +%s%3N)
+sleeptime=$((600-(startuptime2-startuptime1)/1000))
+sleep $sleeptime
 
 echo "---docker pull dotnet from eus.mcr.microsoft.com---"
 pullbegin=$(date +%s%3N)
