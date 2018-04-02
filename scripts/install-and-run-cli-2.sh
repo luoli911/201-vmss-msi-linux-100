@@ -57,6 +57,14 @@ today=$(date +%Y-%m-%d)
 sudo mkdir /mnt/azurefiles
 sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare /mnt/azurefiles -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
 sudo mkdir /mnt/azurefiles/$today
+sudo mkdir /mnt/azurefiles/$today/$hostname
+
+sudo systemctl stop docker
+sudo mkdir /etc/systemd/system/docker.service.d
+sudo touch /etc/systemd/system/docker.service.d/docker.conf
+echo -e \"[Service]\nExecStart=\nExecStart=/usr/bin/dockerd --graph=\"/mnt/new_volume\" --storage-driver=aufs\" |sudo tee /etc/systemd/system/docker.service.d/docker.conf
+sudo systemctl daemon-reload
+sudo systemctl start docker
 
 startuptime2=$(date +%s%3N)
 sleeptime=$((600-(startuptime2-startuptime1)/1000))
@@ -71,5 +79,5 @@ PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
 echo "---nslookup eus.mcr.microsoft.com---"
 nslookup=$(nslookup eus.mcr.microsoft.com)
-echo registry,region,starttime,endtime,pulltime:eus.mcr.microsoft.com,eastus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/mcr-output.log
-echo $nslookup >> /mnt/azurefiles/$today/mcr-output.log
+echo registry,region,starttime,endtime,pulltime:eus.mcr.microsoft.com,eastus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/$hostname/mcr-output.log
+echo $nslookup >> /mnt/azurefiles/$today/$hostname/mcr-output.log
