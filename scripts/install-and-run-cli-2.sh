@@ -92,7 +92,7 @@ fileList=`ls $filePath`
 for fileName in $fileList
     do
       if [ -f $fileName ];then
-          echo `find $filePath|xargs grep -ri "pulltime"` >> /home/acrtest/logshare/$today/mcr-output-all.log
+          echo `find $filePath|xargs grep -ri "pulltime"` >> /mnt/azurefiles/$today/mcr-output-all.log
       elif test -d $fileName; then
           cd $fileName
           filePath=`pwd`
