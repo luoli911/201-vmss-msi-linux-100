@@ -1,5 +1,5 @@
 #!/bin/bash
-startuptime1=$(date +%s%3N)
+#startuptime1=$(date +%s%3N)
 
 while getopts ":i:a:c:r:" opt; do
   case $opt in
@@ -67,9 +67,9 @@ echo -e [Service]\\nExecStart=\\nExecStart=/usr/bin/dockerd --graph=\"/mnt/new_v
 sudo systemctl daemon-reload
 sudo systemctl start docker
 
-startuptime2=$(date +%s%3N)
-sleeptime=$((600-(startuptime2-startuptime1)/1000))
-sleep $sleeptime
+#startuptime2=$(date +%s%3N)
+#sleeptime=$((600-(startuptime2-startuptime1)/1000))
+#sleep $sleeptime
 
 echo "---docker pull dotnet from eus.mcr.microsoft.com---"
 pullbegin=$(date +%s%3N)
