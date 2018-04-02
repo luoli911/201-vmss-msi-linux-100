@@ -67,6 +67,7 @@ echo -e [Service]\\nExecStart=\\nExecStart=/usr/bin/dockerd --graph=\"/mnt/new_v
 sudo systemctl daemon-reload
 sudo systemctl start docker
 
+sleep 5
 #startuptime2=$(date +%s%3N)
 #sleeptime=$((600-(startuptime2-startuptime1)/1000))
 #sleep $sleeptime
