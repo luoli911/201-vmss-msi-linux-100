@@ -54,10 +54,11 @@ sudo apt-get install cifs-utils
 
 
 today=$(date +%Y-%m-%d)
+machineName=$(hostname)
 sudo mkdir /mnt/azurefiles
 sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare /mnt/azurefiles -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
 sudo mkdir /mnt/azurefiles/$today
-sudo mkdir /mnt/azurefiles/$today/hostname
+sudo mkdir /mnt/azurefiles/$today/$machineName
 
 sudo systemctl stop docker
 sudo mkdir /etc/systemd/system/docker.service.d
@@ -79,5 +80,24 @@ PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
 echo "---nslookup eus.mcr.microsoft.com---"
 nslookup=$(nslookup eus.mcr.microsoft.com)
-echo registry,region,starttime,endtime,pulltime:eus.mcr.microsoft.com,eastus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/hostname/mcr-output.log
-echo $nslookup >> /mnt/azurefiles/$today/hostname/mcr-output.log
+echo registry,region,starttime,endtime,pulltime:eus.mcr.microsoft.com,eastus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/$machineName/mcr-output.log
+echo $nslookup >> /mnt/azurefiles/$today/$machineName/mcr-output.log
+
+echo "---Sort out Logs---"
+filePath="/mnt/azurefiles/$today/"
+cd $FilePath
+fileList=`ls $FilePath`
+for fileName in $fileList
+    do
+      if [ -f $fileName ];then
+          echo `find $FilePath|xargs grep -ri "pulltime"` >> /home/acrtest/logshare/$today/mcr-output-all.log
+      elif test -d $fileName; then
+          cd $fileName
+          FilePath=`pwd`
+          getAllFiles
+          cd ..
+       else
+          echo "$FilePath is a invalid path"
+       fi
+     done
+echo "DONE"
