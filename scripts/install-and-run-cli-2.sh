@@ -62,7 +62,7 @@ sudo mkdir /mnt/azurefiles/$today/$hostname
 sudo systemctl stop docker
 sudo mkdir /etc/systemd/system/docker.service.d
 sudo touch /etc/systemd/system/docker.service.d/docker.conf
-echo -e \"[Service]\nExecStart=\nExecStart=/usr/bin/dockerd --graph=\"/mnt/new_volume\" --storage-driver=aufs\" |sudo tee /etc/systemd/system/docker.service.d/docker.conf
+echo -e \"[Service]\\nExecStart=\\nExecStart=/usr/bin/dockerd --graph=\"/mnt/new_volume\" --storage-driver=aufs\" |sudo tee /etc/systemd/system/docker.service.d/docker.conf
 sudo systemctl daemon-reload
 sudo systemctl start docker
 
