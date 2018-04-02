@@ -86,7 +86,7 @@ echo $nslookup >> /mnt/azurefiles/$today/$machineName/mcr-output.log
 echo "---Sort out Logs---"
 filePath="/mnt/azurefiles/$today/"
 cd $FilePath
-fileList=`ls $FilePath`
+fileList=`ls $filePath`
 for fileName in $fileList
     do
       if [ -f $fileName ];then
