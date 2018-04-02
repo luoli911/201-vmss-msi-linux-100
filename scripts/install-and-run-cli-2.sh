@@ -85,19 +85,25 @@ echo $nslookup >> /mnt/azurefiles/$today/$machineName/mcr-output.log
 
 echo "---Sort out Logs---"
 filePath="/mnt/azurefiles/$today/"
-cd $FilePath
+
+function getAllFiles()
+{
 fileList=`ls $filePath`
 for fileName in $fileList
     do
       if [ -f $fileName ];then
-          echo `find $FilePath|xargs grep -ri "pulltime"` >> /home/acrtest/logshare/$today/mcr-output-all.log
+          echo `find $filePath|xargs grep -ri "pulltime"` >> /home/acrtest/logshare/$today/mcr-output-all.log
       elif test -d $fileName; then
           cd $fileName
-          FilePath=`pwd`
+          filePath=`pwd`
           getAllFiles
           cd ..
        else
-          echo "$FilePath is a invalid path"
+          echo "$filePath is a invalid path"
        fi
      done
+}
+
+cd $filePath
+getAllFiles
 echo "DONE"
