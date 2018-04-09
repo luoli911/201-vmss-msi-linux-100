@@ -84,9 +84,10 @@ az extension add --source https://acrbuild.blob.core.windows.net/cli/acrbuildext
 echo "---ACR Build Test---"
 pullbegin=$(date +%s%3N)
 PullStartTime=$(date +%H:%M:%S)
-for (( i=1; i<=100; i++ ))  
+for i in 1 2 3 
   do    
    az acr build -t helloworld$i:v1 --context . -r $ACR_NAME
+   echo "BuildTask$i Done!" >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
   done
 pullend=$(date +%s%3N)
 PullEndTime=$(date +%H:%M:%S)
