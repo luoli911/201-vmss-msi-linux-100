@@ -48,11 +48,20 @@ sudo apt-get -y install apt-transport-https ca-certificates curl software-proper
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt-get -y update
-sudo apt-get -y install docker-ce
+
+#Install Azure CLI
+AZ_REPO=$(lsb_release -cs)
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
+     sudo tee /etc/apt/sources.list.d/azure-cli.list
+sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 52E16F86FEE04B979B07E28DB02C46DF417A0893
+sudo apt-get install apt-transport-https
+sudo apt-get update && sudo apt-get install azure-cli
 
 sudo apt-get -y update
 sudo apt-get install cifs-utils
 
+sudo apt-get -y update
+sudo apt install git-all
 
 today=$(date +%Y-%m-%d)
 sudo mkdir /mnt/azurefiles
@@ -64,6 +73,13 @@ sleeptime=$((600-(startuptime2-startuptime1)/1000))
 sleep $sleeptime
 
 echo "---docker pull dotnet from eus.mcr.microsoft.com---"
+
+git clone https://github.com/SteveLasker/node-helloworld.git
+cd node-helloworld
+az login -u <username> -p <password>
+az acr build -t helloworld:v1 --context . -r $ACR_NAME
+
+
 pullbegin=$(date +%s%3N)
 PullStartTime=$(date +%H:%M:%S)
 sudo docker pull eus.mcr.microsoft.com/dotnet
