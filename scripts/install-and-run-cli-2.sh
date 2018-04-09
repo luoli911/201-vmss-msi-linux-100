@@ -1,7 +1,7 @@
 #!/bin/bash
 startuptime1=$(date +%s%3N)
 
-while getopts ":i:a:c:r:" opt; do
+while getopts ":i:a:c:r:p:" opt; do
   case $opt in
     i) docker_image="$OPTARG"
     ;;
@@ -11,7 +11,7 @@ while getopts ":i:a:c:r:" opt; do
     ;;
     r) resource_group="$OPTARG"
     ;;
-    p) port="$OPTARG"
+    p) password="$OPTARG"
     ;;
 
 t) script_file="$OPTARG"
@@ -39,7 +39,7 @@ do
 
 done
 
-# Install Docker and then run docker image with cli
+# Install Azure CLI and then build image with az
 
 sudo apt-get -y update
 sudo apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
@@ -64,30 +64,31 @@ sudo apt-get -y update
 sudo apt install git-all
 
 today=$(date +%Y-%m-%d)
+currenttime=$(date +%s)
+machineName=$(hostname)
 sudo mkdir /mnt/azurefiles
 sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare /mnt/azurefiles -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
 sudo mkdir /mnt/azurefiles/$today
+sudo mkdir /mnt/azurefiles/$today/Scenario1
+sudo mkdir /mnt/azurefiles/$today/Scenario1/$machineName$currenttime
 
-startuptime2=$(date +%s%3N)
-sleeptime=$((600-(startuptime2-startuptime1)/1000))
-sleep $sleeptime
 
-echo "---docker pull dotnet from eus.mcr.microsoft.com---"
-
-git clone https://github.com/SteveLasker/node-helloworld.git
+ACR_NAME="NewACRLoadTestBuildCR"
+sudo git clone https://github.com/SteveLasker/node-helloworld.git
 cd node-helloworld
-az login -u <username> -p <password>
-az acr build -t helloworld:v1 --context . -r $ACR_NAME
+az login -u azcrci@microsoft.com -p $p
+az account set --subscription "c451bd61-44a6-4b44-890c-ef4c903b7b12"
+az extension remove -n acrbuildext
+az extension add --source https://acrbuild.blob.core.windows.net/cli/acrbuildext-0.0.2-py2.py3-none-any.whl -y
 
-
+echo "---ACR Build Test---"
 pullbegin=$(date +%s%3N)
 PullStartTime=$(date +%H:%M:%S)
-sudo docker pull eus.mcr.microsoft.com/dotnet
+for (( i=1; i<=100; i++ ))  
+  do    
+   az acr build -t helloworld$i:v1 --context . -r $ACR_NAME
+  done
 pullend=$(date +%s%3N)
 PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
-echo "---nslookup eus.mcr.microsoft.com---"
-nslookup=$(nslookup eus.mcr.microsoft.com)
-echo registry,region,starttime,endtime,pulltime:eus.mcr.microsoft.com,eastus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/mcr-output.log
-echo $nslookup >> /mnt/azurefiles/$today/mcr-output.log
-echo "Done"
+echo starttime,endtime,pulltime:$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
