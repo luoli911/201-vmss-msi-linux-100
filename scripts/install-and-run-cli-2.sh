@@ -13,7 +13,8 @@ while getopts ":i:a:c:r:" opt; do
     ;;
     p) port="$OPTARG"
     ;;
-    t) script_file="$OPTARG"
+
+t) script_file="$OPTARG"
     ;;
     \?) echo "Invalid option -$OPTARG" >&2
     ;;
@@ -73,3 +74,4 @@ echo "---nslookup eus.mcr.microsoft.com---"
 nslookup=$(nslookup eus.mcr.microsoft.com)
 echo registry,region,starttime,endtime,pulltime:eus.mcr.microsoft.com,eastus,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/mcr-output.log
 echo $nslookup >> /mnt/azurefiles/$today/mcr-output.log
+echo "Done"
