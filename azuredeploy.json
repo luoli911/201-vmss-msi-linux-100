@@ -8,6 +8,12 @@
         "description": "Username for the Virtual Machine."
       }
     },
+    "azurePassword": {
+      "type": "string",
+      "metadata": {
+        "description": "Password for the Azure Account."
+      }
+    },
     "authenticationType": {
       "type": "string",
       "defaultValue": "password",
