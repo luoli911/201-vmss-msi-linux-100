@@ -74,10 +74,10 @@ sudo mkdir /mnt/azurefiles/$today/Scenario1/$machineName$currenttime
 
 function loadTest()
 {
-ACR_NAME="NewACRLoadTestBuildCR"
+ACR_NAME="NewACRLoadTestBuildCR25"
 sudo git clone https://github.com/SteveLasker/node-helloworld.git
 cd node-helloworld
-az login -u azcrci@microsoft.com -p LPrxL4cW3II8B8Hf76Uz/A==
+az login -u azcrci@microsoft.com -p $p
 az account set --subscription "c451bd61-44a6-4b44-890c-ef4c903b7b12"
 az extension remove -n acrbuildext
 az extension add --source https://acrbuild.blob.core.windows.net/cli/acrbuildext-0.0.2-py2.py3-none-any.whl -y
@@ -94,8 +94,8 @@ for i in {1..100}
 pullend=$(date +%s%3N)
 PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
-echo machineName,starttime,endtime,pulltime:$machineName,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/Scenario1/acr-buid-output-time.log
+echo machineName,starttime,endtime,pulltime:$machineName,$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/Scenario1-25/acr-buid-output-time.log
 
 }
 
-loadTest >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
+loadTest >> /mnt/azurefiles/$today/Scenario1-25/$machineName$currenttime/acr-buid-output.log
