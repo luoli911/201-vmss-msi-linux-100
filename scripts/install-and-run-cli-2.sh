@@ -84,6 +84,7 @@ az login -u azcrci@microsoft.com -p $p
 az account set --subscription "c451bd61-44a6-4b44-890c-ef4c903b7b12"
 az extension remove -n acrbuildext
 az extension add --source https://acrbuild.blob.core.windows.net/cli/acrbuildext-0.0.2-py2.py3-none-any.whl -y
+az acr login -n $ACR_NAME
 
 echo "---ACR Build Test---"
 pullbegin=$(date +%s%3N)
