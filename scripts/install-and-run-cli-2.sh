@@ -68,6 +68,10 @@ currenttime=$(date +%s)
 machineName=$(hostname)
 sudo mkdir /mnt/azurefiles
 sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare /mnt/azurefiles -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
+
+function loadTest()
+{
+
 sudo mkdir /mnt/azurefiles/$today
 sudo mkdir /mnt/azurefiles/$today/Scenario1
 sudo mkdir /mnt/azurefiles/$today/Scenario1/$machineName$currenttime
@@ -86,10 +90,14 @@ pullbegin=$(date +%s%3N)
 PullStartTime=$(date +%H:%M:%S)
 for i in 1 2 3 
   do    
-   az acr build -t helloworld$i:v1 --context . -r $ACR_NAME >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
-   echo "BuildTask$i Done!" >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
+   az acr build -t helloworld$i:v1 --context . -r $ACR_NAME 
+   echo "BuildTask$i Done!" 
   done
 pullend=$(date +%s%3N)
 PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
-echo starttime,endtime,pulltime:$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
+echo starttime,endtime,pulltime:$PullStartTime,$PullEndTime,$pulltime
+
+}
+
+loadTest >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
