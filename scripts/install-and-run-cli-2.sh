@@ -86,7 +86,7 @@ pullbegin=$(date +%s%3N)
 PullStartTime=$(date +%H:%M:%S)
 for i in 1 2 3 
   do    
-   az acr build -t helloworld$i:v1 --context . -r $ACR_NAME
+   az acr build -t helloworld$i:v1 --context . -r $ACR_NAME >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
    echo "BuildTask$i Done!" >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output.log
   done
 pullend=$(date +%s%3N)
