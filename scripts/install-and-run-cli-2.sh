@@ -94,7 +94,7 @@ for i in 1 2 3
 pullend=$(date +%s%3N)
 PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
-echo starttime,endtime,pulltime:$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output-time.log
+echo starttime,endtime,pulltime:$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/Scenario1/acr-buid-output-time.log
 
 }
 
