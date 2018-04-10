@@ -41,36 +41,43 @@ done
 
 
 #Install Azure CLI
+sudo apt-get -y update
+sudo apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
+sudo apt-get -y update
+sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get -y update
+sudo apt-get -y install docker-ce
+
 AZ_REPO=$(lsb_release -cs)
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
      sudo tee /etc/apt/sources.list.d/azure-cli.list
 sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 52E16F86FEE04B979B07E28DB02C46DF417A0893
-sudo apt-get install apt-transport-https
-sudo apt-get update && sudo apt-get install azure-cli
+sudo apt-get install -y apt-transport-https
+sudo apt-get -y update && sudo apt-get install -y azure-cli
 
 sudo apt-get -y update
-sudo apt-get install cifs-utils
+sudo apt-get install -y cifs-utils
 
 sudo apt-get -y update
-sudo apt install git-all
+sudo apt install -y git-all
 
 today=$(date +%Y-%m-%d)
 currenttime=$(date +%s)
 machineName=$(hostname)
 sudo mkdir /mnt/azurefiles
 sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare /mnt/azurefiles -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
-
-function loadTest()
-{
-
 sudo mkdir /mnt/azurefiles/$today
 sudo mkdir /mnt/azurefiles/$today/Scenario1
 sudo mkdir /mnt/azurefiles/$today/Scenario1/$machineName$currenttime
 
+function loadTest()
+{
 ACR_NAME="NewACRLoadTestBuildCR"
 sudo git clone https://github.com/SteveLasker/node-helloworld.git
 cd node-helloworld
-az login -u azcrci@microsoft.com -p $p
+az login -u azcrci@microsoft.com -p LPrxL4cW3II8B8Hf76Uz/A==
 az account set --subscription "c451bd61-44a6-4b44-890c-ef4c903b7b12"
 az extension remove -n acrbuildext
 az extension add --source https://acrbuild.blob.core.windows.net/cli/acrbuildext-0.0.2-py2.py3-none-any.whl -y
@@ -87,7 +94,7 @@ for i in 1 2 3
 pullend=$(date +%s%3N)
 PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
-echo starttime,endtime,pulltime:$PullStartTime,$PullEndTime,$pulltime
+echo starttime,endtime,pulltime:$PullStartTime,$PullEndTime,$pulltime >> /mnt/azurefiles/$today/Scenario1/$machineName$currenttime/acr-buid-output-time.log
 
 }
 
