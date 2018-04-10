@@ -86,11 +86,13 @@ az acr login -n $ACR_NAME
 echo "---ACR Build Test---"
 pullbegin=$(date +%s%3N)
 PullStartTime=$(date +%H:%M:%S)
-for i in {1..100} 
-  do    
-   az acr build -t helloworld$i:v1 --context . -r $ACR_NAME 
-   echo "BuildTask$i Done!" 
-  done
+#for i in {1..100} 
+#  do    
+#   az acr build -t helloworld$i:v1 --context . -r $ACR_NAME 
+#   echo "BuildTask$i Done!" 
+#  done
+az acr build -t helloworld1:v1 --context . -r $ACR_NAME 
+echo "BuildTask1 Done!" 
 pullend=$(date +%s%3N)
 PullEndTime=$(date +%H:%M:%S)
 pulltime=$((pullend-pullbegin))
