@@ -69,15 +69,15 @@ machineName=$(hostname)
 sudo mkdir /mnt/azurefiles
 sudo mount -t cifs //acrtestlogs.file.core.windows.net/logshare /mnt/azurefiles -o vers=3.0,username=acrtestlogs,password=ZIisPCN0UrjLfhv6Njiz0Q8w9YizeQgIm6+DIfMtjak4RJrRlzJFn4EcwDUhNvXmmDv5Axw9yGePh3vn1ak8cg==,dir_mode=0777,file_mode=0777,sec=ntlmssp
 sudo mkdir /mnt/azurefiles/$today
-sudo mkdir /mnt/azurefiles/$today/Scenario1
-sudo mkdir /mnt/azurefiles/$today/Scenario1/$machineName$currenttime
+sudo mkdir /mnt/azurefiles/$today/Scenario1-25
+sudo mkdir /mnt/azurefiles/$today/Scenario1-25/$machineName$currenttime
 
 function loadTest()
 {
 ACR_NAME="NewACRLoadTestBuildCR25"
 sudo git clone https://github.com/SteveLasker/node-helloworld.git
 cd node-helloworld
-az login -u azcrci@microsoft.com -p $p
+az login -u azcrci@microsoft.com -p $password
 az account set --subscription "c451bd61-44a6-4b44-890c-ef4c903b7b12"
 az extension remove -n acrbuildext
 az extension add --source https://acrbuild.blob.core.windows.net/cli/acrbuildext-0.0.2-py2.py3-none-any.whl -y
