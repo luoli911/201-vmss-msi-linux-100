@@ -50,6 +50,7 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-get -y update
 sudo apt-get -y install docker-ce
 
+#Install Docker CLI
 AZ_REPO=$(lsb_release -cs)
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | \
      sudo tee /etc/apt/sources.list.d/azure-cli.list
@@ -57,9 +58,11 @@ sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 52E16F86FEE04B97
 sudo apt-get install -y apt-transport-https
 sudo apt-get -y update && sudo apt-get install -y azure-cli
 
+#Install cifs utils for mount file share
 sudo apt-get -y update
 sudo apt-get install -y cifs-utils
 
+#Install git tool
 sudo apt-get -y update
 sudo apt install -y git-all
 
